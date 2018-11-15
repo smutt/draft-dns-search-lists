@@ -35,7 +35,7 @@
         <postal>
           <street>12025 Waterfront Drive, Suite 300</street>
 
-          <country>United States of America</country>
+          <country>USA</country>
 
           <code>90094</code>
 
@@ -59,7 +59,7 @@
 
           <code>94043</code>
 
-          <country>US</country>
+          <country>USA</country>
         </postal>
 
         <email>warren@kumari.net</email>
@@ -101,7 +101,7 @@
       "system.example.com", and perhaps "system." in some order.</t>
 
       <t>Search list processing, including order of operations for search list
-      processing, was loosely specified in <xref target="RFC1123"/> (specifically, section 6.1.4.3 (2)), <xref target="RFC1535"/>, and <xref target="RFC1536"/> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <xref target="RFC3397"/> and <xref target="6106"/>.
+      processing, was loosely specified in <xref target="RFC1123"/> (specifically, section 6.1.4.3 (2)), <xref target="RFC1535"/>, and <xref target="RFC1536"/> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <xref target="RFC3397"/> and <xref target="RFC6106"/>.
       
       As the Internet has grown, search list behavior has diversified. Applications (e.g., web browser and mail clients) and DNS resolvers process search list suffixes differently. Some of these behaviors also present security and privacy issues to end systems <xref target="SAC064"/> <xref target="RFC3397"/>, and performance problems both for the end system and the Internet.</t>
 
@@ -177,10 +177,15 @@
       <?rfc include='reference.RFC.6106'?>
     </references>
 	<references title="Informative References">
-	  <include="SAC064"/>
+      <reference anchor="SAC064"	target="https://www.icann.org/en/groups/ssac/documents/sac-064-en.pdf">
+ 	    <front>
+ 	      <title>SAC064: SSAC Advisory on Search List Processing</title>
+	      <author fullname="ICANN Security and Stability Advisory Committee"/>
+          <date year="2014" month="February" day="13"/>
+        </front>  
+ 	  </reference>
 	  
-	  
-	</refrences>
+	</references>
 
     <section title="Changes / Author Notes.">
       <t>[RFC Editor: Please remove this section before publication ]</t>
