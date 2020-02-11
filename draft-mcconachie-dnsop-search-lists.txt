@@ -18,14 +18,13 @@ Abstract
    list") is an ordered list of domain names.  When a user enters a
    name, the domain names in the search list are used as suffixes to the
    user-supplied name, one by one, until a domain name with the desired
-   associated data is found or the search list is exhausted.[Ed note:
-   This definintion is lifted from RFC 1123.]
+   associated data is found or the search list is exhausted.  [RFC1123]
 
    Processing search lists was weakly standardized in early Requests For
-   Comments (RFCs)[Ed note: need refs here] and implemented in most
-   operating systems.  However, as the Internet has grown, search list
-   behavior has diversified.  Applications (e.g., web browsers, mail
-   clients) and DNS resolvers process search lists differently.  In
+   Comments (RFCs) [RFC1123], [RFC1535], [RFC1536] and implemented in
+   most operating systems.  However, as the Internet has grown, search
+   list behavior has diversified.  Applications (e.g., web browsers,
+   mail clients) and DNS resolvers process search lists differently.  In
    addition, some of these behaviors present security and privacy issues
    to end systems, can lead to performance problems for the Internet,
    and can cause collisions with names provisioned under delegated top-
@@ -49,7 +48,8 @@ Status of This Memo
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
-
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
 
 
 
@@ -57,9 +57,6 @@ McConachie & Kumari       Expires June 3, 2019                  [Page 1]
 
 Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
-
-   time.  It is inappropriate to use Internet-Drafts as reference
-   material or to cite them other than as "work in progress."
 
    This Internet-Draft will expire on June 3, 2019.
 
@@ -83,9 +80,10 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements notation . . . . . . . . . . . . . . . . . .   3
    2.  Search List Best Practices  . . . . . . . . . . . . . . . . .   3
-     2.1.  Implicit search lists . . . . . . . . . . . . . . . . . .   4
+     2.1.  Implicit search lists . . . . . . . . . . . . . . . . . .   3
      2.2.  Overriding manually configured search lists . . . . . . .   4
      2.3.  Querying unqualified single-label domain names  . . . . .   4
+     2.4.  Querying multi-label domain names . . . . . . . . . . . .   4
    3.  Negative Consequences For the Change  . . . . . . . . . . . .   4
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
@@ -105,6 +103,8 @@ Table of Contents
    often becomes common within these organizations to only use the
    subdomain internally as an abbreviated form of reference.
 
+   As a convenience to users, many operating systems implement search
+   list processing, a feature that allows a user to enter a partial name
 
 
 
@@ -114,8 +114,6 @@ McConachie & Kumari       Expires June 3, 2019                  [Page 2]
 Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
-   As a convenience to users, many operating systems implement search
-   list processing, a feature that allows a user to enter a partial name
    in an application, with the operating system expanding the name
    through entries in a search list.
 
@@ -140,8 +138,8 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
    processing, was loosely specified in [RFC1123] (specifically, section
    6.1.4.3 (2)), [RFC1535], and [RFC1536] and has been implemented in
    most operating systems.  Processing of search lists received via DHCP
-   and IPv6 Router Advertisements (RA) is standardized in [RFC3397] and
-   [RFC6106].
+   and IPv6 Router Advertisements (RA) is standardized in [RFC3397],
+   [RFC3646] and [RFC6106].
 
    As the Internet has grown, search list behavior has diversified.
    Applications (e.g., web browser and mail clients) and DNS resolvers
@@ -158,10 +156,12 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 2.  Search List Best Practices
 
+2.1.  Implicit search lists
 
-
-
-
+   An implicit search list is a search list automatically derived from
+   some part of a host's Fully Qualified Domain Name (FQDN).  Implicit
+   search lists are not manually configured by users or network
+   administrators.  The most common implicit search list is a list with
 
 
 
@@ -170,12 +170,6 @@ McConachie & Kumari       Expires June 3, 2019                  [Page 3]
 Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
-2.1.  Implicit search lists
-
-   An implicit search list is a search list automatically derived from
-   some part of a host's Fully Qualified Domain Name (FQDN).  Implicit
-   search lists are not manually configured by users or network
-   administrators.  The most common implicit search list is a list with
    a single entry composed only of the host's immediate parent domain.
    For example, a host with FQDN a.example.org might have an implicit
    search list of example.org.
@@ -202,9 +196,16 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
    Unqualified single label domain names MUST NOT be queried directly.
    When a user enters a single label name into an application, that name
-   may be subject to search list processing if a search list is
-   specified, but must never be queried in the DNS in its original
-   single-label form.
+   MUST be subject to search list processing if a search list is
+   specified, and MUST NOT be queried in the DNS in its original single-
+   label form.
+
+2.4.  Querying multi-label domain names
+
+   Multi-label domain names MAY be subject to search list processing if
+   a search list is specified.  Multi-label domain names MUST NOT be
+   subject to search list processing if their right most character is a
+   dot(".").
 
 3.  Negative Consequences For the Change
 
@@ -216,8 +217,7 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
    Changing search list behavior of unqualified multi-label domain names
    MAY potentially reduce the utility of these names.
 
-   Not all applications currently in use treat these categories of
-   domain names in the same way.  Incompatibilities and operational
+
 
 
 
@@ -226,6 +226,8 @@ McConachie & Kumari       Expires June 3, 2019                  [Page 4]
 Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
+   Not all applications currently in use treat these categories of
+   domain names in the same way.  Incompatibilities and operational
    problems, specifically in BYOD (Bring Your Own Device) environments,
    already exist.
 
@@ -269,10 +271,8 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC3397]  Aboba, B. and S. Cheshire, "Dynamic Host Configuration
-              Protocol (DHCP) Domain Search Option", RFC 3397,
-              DOI 10.17487/RFC3397, November 2002,
-              <https://www.rfc-editor.org/info/rfc3397>.
+
+
 
 
 
@@ -281,6 +281,11 @@ McConachie & Kumari       Expires June 3, 2019                  [Page 5]
 
 Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
+
+   [RFC3397]  Aboba, B. and S. Cheshire, "Dynamic Host Configuration
+              Protocol (DHCP) Domain Search Option", RFC 3397,
+              DOI 10.17487/RFC3397, November 2002,
+              <https://www.rfc-editor.org/info/rfc3397>.
 
    [RFC3646]  Droms, R., Ed., "DNS Configuration options for Dynamic
               Host Configuration Protocol for IPv6 (DHCPv6)", RFC 3646,
@@ -305,7 +310,7 @@ Appendix A.  Changes / Author Notes.
 
    From initial to -00.
 
-   o  Nothing changed in the template!
+   o  First post!
 
 Authors' Addresses
 
@@ -317,6 +322,20 @@ Authors' Addresses
 
    Phone: +1.310.301.5800
    Email: andrew.mccconachie@icann.org
+
+
+
+
+
+
+
+
+
+
+
+McConachie & Kumari       Expires June 3, 2019                  [Page 6]
+
+Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
    Warren Kumari
@@ -333,4 +352,41 @@ Authors' Addresses
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+McConachie & Kumari       Expires June 3, 2019                  [Page 7]

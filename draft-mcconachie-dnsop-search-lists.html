@@ -380,6 +380,7 @@
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Implicit search lists">
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Overriding manually configured search lists">
 <link href="#rfc.section.2.3" rel="Chapter" title="2.3 Querying unqualified single-label domain names">
+<link href="#rfc.section.2.4" rel="Chapter" title="2.4 Querying multi-label domain names">
 <link href="#rfc.section.3" rel="Chapter" title="3 Negative Consequences For the Change">
 <link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations">
 <link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations">
@@ -397,8 +398,8 @@
   <meta name="dct.creator" content="McConachie, A. and W. Kumari" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-mcconachie-search-list-00" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-11-30" />
-  <meta name="dct.abstract" content="A Domain Name System (DNS) &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted.[Ed note: This definintion is lifted from RFC 1123.]" />
-  <meta name="description" content="A Domain Name System (DNS) &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted.[Ed note: This definintion is lifted from RFC 1123.]" />
+  <meta name="dct.abstract" content="A Domain Name System (DNS) &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. " />
+  <meta name="description" content="A Domain Name System (DNS) &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. " />
 
 </head>
 
@@ -436,8 +437,8 @@
   <span class="filename">draft-mcconachie-search-list-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>A Domain Name System (DNS) "search list" (hereafter, simply "search list") is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted.[Ed note: This definintion is lifted from RFC 1123.]</p>
-<p>Processing search lists was weakly standardized in early Requests For Comments (RFCs)[Ed note: need refs here] and implemented in most operating systems. However, as the Internet has grown, search list behavior has diversified. Applications (e.g., web browsers, mail clients) and DNS resolvers process search lists differently. In addition, some of these behaviors present security and privacy issues to end systems, can lead to performance problems for the Internet, and can cause collisions with names  provisioned under delegated top-level domains.</p>
+<p>A Domain Name System (DNS) "search list" (hereafter, simply "search list") is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. <a href="#RFC1123" class="xref">[RFC1123]</a></p>
+<p>Processing search lists was weakly standardized in early Requests For Comments (RFCs) <a href="#RFC1123" class="xref">[RFC1123]</a>, <a href="#RFC1535" class="xref">[RFC1535]</a>, <a href="#RFC1536" class="xref">[RFC1536]</a> and implemented in most operating systems. However, as the Internet has grown, search list behavior has diversified. Applications (e.g., web browsers, mail clients) and DNS resolvers process search lists differently. In addition, some of these behaviors present security and privacy issues to end systems, can lead to performance problems for the Internet, and can cause collisions with names  provisioned under delegated top-level domains.</p>
 <p>In this document, we make three proposals regarding when and how to use DNS search lists.</p>
 <p>[ Ed note (remove): This document is being developed in github: https://github.com/smutt/draft-dns-search-lists ]</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
@@ -465,6 +466,8 @@
 <li>2.2.   <a href="#rfc.section.2.2">Overriding manually configured search lists</a>
 </li>
 <li>2.3.   <a href="#rfc.section.2.3">Querying unqualified single-label domain names</a>
+</li>
+<li>2.4.   <a href="#rfc.section.2.4">Querying multi-label domain names</a>
 </li>
 </ul><li>3.   <a href="#rfc.section.3">Negative Consequences For the Change</a>
 </li>
@@ -494,7 +497,7 @@
 <p id="rfc.section.1.p.2">As a convenience to users, many operating systems implement search list processing, a feature that allows a user to enter a partial name in an application, with the operating system expanding the name through entries in a search list.</p>
 <p id="rfc.section.1.p.3">For example, if a user has a search list of "corp.example.com;berlin.example.com;example.com" and she types "system" into her browser's address box, the operating system would try "system.corp.example.com", "system.berlin.example.com", "system.example.com", and perhaps "system." in some order.</p>
 <p id="rfc.section.1.p.4">While this may be convenient for users who do not wish to use a Fully Qualified Domain Name (FQDN) it comes with security implications that may not be immediately evident to the user. The most obvious of which being that the user can not know precisely which domain name(s) the operating system will query for and in what order. Depending on the configuration of the user's computer and network this may result in the user being tricked into visiting a site they did not intend, and consequently place them at risk of being phished or otherwise compromised. For more discussion on the security implications of search list processing see <a href="#SAC064" class="xref">[SAC064]</a>. </p>
-<p id="rfc.section.1.p.5">Search list processing, including order of operations for search list processing, was loosely specified in <a href="#RFC1123" class="xref">[RFC1123]</a> (specifically, section 6.1.4.3 (2)), <a href="#RFC1535" class="xref">[RFC1535]</a>, and <a href="#RFC1536" class="xref">[RFC1536]</a> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <a href="#RFC3397" class="xref">[RFC3397]</a> and <a href="#RFC6106" class="xref">[RFC6106]</a>. </p>
+<p id="rfc.section.1.p.5">Search list processing, including order of operations for search list processing, was loosely specified in <a href="#RFC1123" class="xref">[RFC1123]</a> (specifically, section 6.1.4.3 (2)), <a href="#RFC1535" class="xref">[RFC1535]</a>, and <a href="#RFC1536" class="xref">[RFC1536]</a> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <a href="#RFC3397" class="xref">[RFC3397]</a>, <a href="#RFC3646" class="xref">[RFC3646]</a> and <a href="#RFC6106" class="xref">[RFC6106]</a>. </p>
 <p id="rfc.section.1.p.6">As the Internet has grown, search list behavior has diversified. Applications (e.g., web browser and mail clients) and DNS resolvers process search list suffixes differently. Some of these behaviors also present security and privacy issues to end systems <a href="#SAC064" class="xref">[SAC064]</a> <a href="#RFC3397" class="xref">[RFC3397]</a>, and performance problems both for the end system and the Internet.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> Requirements notation</h1>
@@ -512,7 +515,10 @@
 <p id="rfc.section.2.2.p.2">For further discussion on how hosts should process DNS search lists learned via DHCP or IPv6 RAs see <a href="#RFC6106" class="xref">[RFC6106]</a> section 5.3.1.</p>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> Querying unqualified single-label domain names</h1>
-<p id="rfc.section.2.3.p.1">Unqualified single label domain names MUST NOT be queried directly.  When a user enters a single label name into an application, that name may be subject to search list processing if a search list is specified, but must never be queried in the DNS in its original single-label form.</p>
+<p id="rfc.section.2.3.p.1">Unqualified single label domain names MUST NOT be queried directly.  When a user enters a single label name into an application, that name MUST be subject to search list processing if a search list is specified, and MUST NOT be queried in the DNS in its original single-label form.</p>
+<h1 id="rfc.section.2.4">
+<a href="#rfc.section.2.4">2.4.</a> Querying multi-label domain names</h1>
+<p id="rfc.section.2.4.p.1">Multi-label domain names MAY be subject to search list processing if a search list is specified. Multi-label domain names MUST NOT be subject to search list processing if their right most character is a dot(".").</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> Negative Consequences For the Change</h1>
 <p id="rfc.section.3.p.1">There are operators that today rely on a combination of both implicit search lists, and the automatic propagation of search lists to clients via DHCP or IPv6 RA. The proposed changes would require operators to update their procedures.</p>
@@ -586,7 +592,7 @@
 <p id="rfc.section.A.p.2">From initial to -00.</p>
 <p></p>
 
-<ul><li>Nothing changed in the template!</li></ul>
+<ul><li>First post!</li></ul>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

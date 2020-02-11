@@ -71,13 +71,25 @@
 
     <abstract>
       <t>A Domain Name System (DNS) "search list" (hereafter, simply "search
-      list") is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted.[Ed note: This definintion is lifted from RFC 1123.]</t>
+      list") is an ordered list of domain names. When a user enters a
+      name, the domain names in the search list are used as suffixes
+      to the user-supplied name, one by one, until a domain name with
+      the desired associated data is found or the search list is
+      exhausted. <xref  target="RFC1123"/></t>
 
       <t>Processing search lists was weakly standardized in early Requests For
-      Comments (RFCs)[Ed note: need refs here] and implemented in most operating systems. However, as the Internet has grown, search list behavior has diversified. Applications (e.g., web browsers, mail clients) and DNS resolvers process search lists differently. In addition, some of these behaviors present security and privacy issues to end systems, can lead to
-      performance problems for the Internet, and can cause collisions with names  provisioned under delegated top-level domains.</t>
+      Comments (RFCs) <xref  target="RFC1123"/>, <xref
+      target="RFC1535"/>, <xref target="RFC1536"/> and implemented in most
+      operating systems. However, as the Internet has grown, search
+      list behavior has diversified. Applications (e.g., web browsers,
+      mail clients) and DNS resolvers process search lists
+      differently. In addition, some of these behaviors present
+      security and privacy issues to end systems, can lead to
+      performance problems for the Internet, and can cause collisions
+      with names  provisioned under delegated top-level domains.</t>
 
-      <t>In this document, we make three proposals regarding when and how to use DNS search lists.</t>
+      <t>In this document, we make three proposals regarding when and
+      how to use DNS search lists.</t>
 
       <t>[ Ed note (remove): This document is being developed in github:
       https://github.com/smutt/draft-dns-search-lists
@@ -123,19 +135,22 @@
       and <xref target="RFC1536"/> and has been implemented in most
       operating systems. Processing of search lists received via DHCP
       and IPv6 Router Advertisements (RA) is standardized in <xref
-      target="RFC3397"/> and <xref target="RFC6106"/>. </t>
+      target="RFC3397"/>, <xref target="RFC3646"/> and <xref
+      target="RFC6106"/>. </t>
       
       <t>As the Internet has grown, search list behavior has
       diversified. Applications (e.g., web browser and mail clients)
       and DNS resolvers process search list suffixes differently. Some
       of these behaviors also present security and privacy issues to
       end systems <xref target="SAC064"/> <xref target="RFC3397"/>,
-      and performance problems both for the end system and the Internet.</t>
+      and performance problems both for the end system and the
+      Internet.</t>
 
       <section title="Requirements notation">
-        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-        document are to be interpreted as described in <xref    target="RFC2119"/>.</t>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+        "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
+        "OPTIONAL" in this document are to be interpreted as described
+        in <xref  target="RFC2119"/>.</t>
       </section>
     </section>
 
@@ -155,7 +170,8 @@
         single-label domain name (i.e., dotless domain) 
         is to be queried, the query MUST NOT be generated.</t>
         
-		    <t>This behavior updates the advice given in <xref target="RFC1536"/> section 6.</t>
+		    <t>This behavior updates the advice given in <xref
+        target="RFC1536"/> section 6.</t>
 	    </section>
       
 	    <section title="Overriding manually configured search lists">
@@ -164,24 +180,35 @@
         (RAs). A host MAY use a search list learned via DHCP or IPv6 RAs
         only if it has no manually configured search list.</t>
         
-	      <t>For further discussion on how hosts should process DNS search lists learned via DHCP or IPv6 RAs see <xref target="RFC6106"/> section 5.3.1.</t>
+	      <t>For further discussion on how hosts should process DNS
+        search lists learned via DHCP or IPv6 RAs see <xref
+        target="RFC6106"/> section 5.3.1.</t>
 	    </section>
       
 	    <section title="Querying unqualified single-label domain names">
-		<t>Unqualified single label domain names MUST NOT be queried
-    directly.  When a user enters a single label name into an
-    application, that name may be subject to search list processing if
-    a search list is specified, but must never be queried in the DNS
-    in its original single-label form.</t>
-	  </section>
+		    <t>Unqualified single label domain names MUST NOT be queried
+        directly.  When a user enters a single label name into an
+        application, that name MUST be subject to search list processing if
+        a search list is specified, and MUST NOT be queried in the DNS
+        in its original single-label form.</t>
+	    </section>
+      
+	    <section title="Querying multi-label domain names">
+		    <t>Multi-label domain names MAY be subject to search list
+        processing if a search list is specified. Multi-label domain
+        names MUST NOT be subject to search list processing if their
+        right most character is a dot(".").</t>
+	    </section>
     </section>
 
     <section title="Negative Consequences For the Change">
-      <t>There are operators that today rely on a combination of both implicit search lists, and the automatic propagation of search lists to
-      clients via DHCP or IPv6 RA. The proposed changes would require operators to update their procedures.</t>
+      <t>There are operators that today rely on a combination of both
+      implicit search lists, and the automatic propagation of search lists to
+      clients via DHCP or IPv6 RA. The proposed changes would require
+      operators to update their procedures.</t>
 
-      <t>Changing search list behavior of unqualified multi-label domain names
-      MAY potentially reduce the utility of these names.</t>
+      <t>Changing search list behavior of unqualified multi-label
+      domain names MAY potentially reduce the utility of these names.</t>
 
       <t>Not all applications currently in use treat these categories
       of domain names in the same way. Incompatibilities and operational
@@ -237,7 +264,7 @@
       <t>From initial to -00.</t>
 
       <t><list style="symbols">
-          <t>Nothing changed in the template!</t>
+          <t>First post!</t>
         </list></t>
     </section>
   </back>

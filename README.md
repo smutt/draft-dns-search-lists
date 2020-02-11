@@ -15,18 +15,18 @@ A Domain Name System (DNS) "search list" (hereafter, simply "search
 list") is an ordered list of domain names. When a user enters a name,
 the domain names in the search list are used as suffixes to the
 user-supplied name, one by one, until a domain name with the desired
-associated data is found or the search list is exhausted.\[Ed note: This
-definintion is lifted from RFC 1123.\]
+associated data is found or the search list is exhausted.
+[\[RFC1123\]](#RFC1123)
 
 Processing search lists was weakly standardized in early Requests For
-Comments (RFCs)\[Ed note: need refs here\] and implemented in most
-operating systems. However, as the Internet has grown, search list
-behavior has diversified. Applications (e.g., web browsers, mail
-clients) and DNS resolvers process search lists differently. In
-addition, some of these behaviors present security and privacy issues to
-end systems, can lead to performance problems for the Internet, and can
-cause collisions with names provisioned under delegated top-level
-domains.
+Comments (RFCs) [\[RFC1123\]](#RFC1123), [\[RFC1535\]](#RFC1535),
+[\[RFC1536\]](#RFC1536) and implemented in most operating systems.
+However, as the Internet has grown, search list behavior has
+diversified. Applications (e.g., web browsers, mail clients) and DNS
+resolvers process search lists differently. In addition, some of these
+behaviors present security and privacy issues to end systems, can lead
+to performance problems for the Internet, and can cause collisions with
+names provisioned under delegated top-level domains.
 
 In this document, we make three proposals regarding when and how to use
 DNS search lists.
@@ -79,6 +79,7 @@ described in the Simplified BSD License.
   - 2.2. [Overriding manually configured search lists](#rfc.section.2.2)
   - 2.3. [Querying unqualified single-label domain
     names](#rfc.section.2.3)
+  - 2.4. [Querying multi-label domain names](#rfc.section.2.4)
 
 3\. [Negative Consequences For the Change](#rfc.section.3)
 
@@ -133,8 +134,8 @@ processing, was loosely specified in [\[RFC1123\]](#RFC1123)
 (specifically, section 6.1.4.3 (2)), [\[RFC1535\]](#RFC1535), and
 [\[RFC1536\]](#RFC1536) and has been implemented in most operating
 systems. Processing of search lists received via DHCP and IPv6 Router
-Advertisements (RA) is standardized in [\[RFC3397\]](#RFC3397) and
-[\[RFC6106\]](#RFC6106).
+Advertisements (RA) is standardized in [\[RFC3397\]](#RFC3397),
+[\[RFC3646\]](#RFC3646) and [\[RFC6106\]](#RFC6106).
 
 As the Internet has grown, search list behavior has diversified.
 Applications (e.g., web browser and mail clients) and DNS resolvers
@@ -183,9 +184,15 @@ learned via DHCP or IPv6 RAs see [\[RFC6106\]](#RFC6106) section
 # [2.3.](#rfc.section.2.3) Querying unqualified single-label domain names
 
 Unqualified single label domain names MUST NOT be queried directly. When
-a user enters a single label name into an application, that name may be
-subject to search list processing if a search list is specified, but
-must never be queried in the DNS in its original single-label form.
+a user enters a single label name into an application, that name MUST be
+subject to search list processing if a search list is specified, and
+MUST NOT be queried in the DNS in its original single-label form.
+
+# [2.4.](#rfc.section.2.4) Querying multi-label domain names
+
+Multi-label domain names MAY be subject to search list processing if a
+search list is specified. Multi-label domain names MUST NOT be subject
+to search list processing if their right most character is a dot(".").
 
 # [3.](#rfc.section.3) Negative Consequences For the Change
 
@@ -242,7 +249,7 @@ Committee.
 
 From initial to -00.
 
-  - Nothing changed in the template\!
+  - First post\!
 
 # [Authors' Addresses](#rfc.authors)
 
