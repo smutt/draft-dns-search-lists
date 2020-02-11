@@ -6,7 +6,7 @@ Network Working Group                                      A. McConachie
 Internet-Draft                                                     ICANN
 Updates: 1536 (if approved)                                    W. Kumari
 Intended status: Best Current Practice                            Google
-Expires: June 3, 2019                                  November 30, 2018
+Expires: August 14, 2020                               February 11, 2020
 
 
                  DNS Search Lists Considered Dangerous
@@ -53,16 +53,16 @@ Status of This Memo
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 1]
+McConachie & Kumari      Expires August 14, 2020                [Page 1]
 
-Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
-   This Internet-Draft will expire on June 3, 2019.
+   This Internet-Draft will expire on August 14, 2020.
 
 Copyright Notice
 
-   Copyright (c) 2018 IETF Trust and the persons identified as the
+   Copyright (c) 2020 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 2]
+McConachie & Kumari      Expires August 14, 2020                [Page 2]
 
-Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
    in an application, with the operating system expanding the name
@@ -165,9 +165,9 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 3]
+McConachie & Kumari      Expires August 14, 2020                [Page 3]
 
-Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
    a single entry composed only of the host's immediate parent domain.
@@ -221,9 +221,9 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 4]
+McConachie & Kumari      Expires August 14, 2020                [Page 4]
 
-Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
    Not all applications currently in use treat these categories of
@@ -277,9 +277,9 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 5]
+McConachie & Kumari      Expires August 14, 2020                [Page 5]
 
-Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
    [RFC3397]  Aboba, B. and S. Cheshire, "Dynamic Host Configuration
@@ -333,9 +333,9 @@ Authors' Addresses
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 6]
+McConachie & Kumari      Expires August 14, 2020                [Page 6]
 
-Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
    Warren Kumari
@@ -389,4 +389,4 @@ Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
 
-McConachie & Kumari       Expires June 3, 2019                  [Page 7]
+McConachie & Kumari      Expires August 14, 2020                [Page 7]

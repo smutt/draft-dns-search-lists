@@ -4,7 +4,7 @@
 | Internet-Draft                         | ICANN             |
 | Updates: 1536 (if approved)            | W. Kumari         |
 | Intended status: Best Current Practice | Google            |
-| Expires: June 3, 2019                  | November 30, 2018 |
+| Expires: August 14, 2020               | February 11, 2020 |
 
 DNS Search Lists Considered Dangerous  
 <span class="filename">draft-mcconachie-search-list-00</span>
@@ -49,11 +49,11 @@ and may be updated, replaced, or obsoleted by other documents at any
 time. It is inappropriate to use Internet-Drafts as reference material
 or to cite them other than as "work in progress."
 
-This Internet-Draft will expire on June 3, 2019.
+This Internet-Draft will expire on August 14, 2020.
 
 # [Copyright Notice](#rfc.copyrightnotice)
 
-Copyright (c) 2018 IETF Trust and the persons identified as the document
+Copyright (c) 2020 IETF Trust and the persons identified as the document
 authors. All rights reserved.
 
 This document is subject to BCP 78 and the IETF Trust's Legal Provisions
