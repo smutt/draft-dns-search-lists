@@ -9,7 +9,7 @@ Intended status: Best Current Practice                            Google
 Expires: June 3, 2019                                  November 30, 2018
 
 
-                 DNS Search List Best Current Practices
+                 DNS Search Lists Considered Dangerous
                     draft-mcconachie-search-list-00
 
 Abstract
@@ -55,7 +55,7 @@ Status of This Memo
 
 McConachie & Kumari       Expires June 3, 2019                  [Page 1]
 
-Internet-Draft   DNS Search List Best Current Practices    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
    time.  It is inappropriate to use Internet-Drafts as reference
@@ -82,18 +82,18 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements notation . . . . . . . . . . . . . . . . . .   3
-   2.  Proposal  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-     2.1.  Implicit search lists . . . . . . . . . . . . . . . . . .   3
-     2.2.  Overriding manually configured search lists . . . . . . .   3
+   2.  Search List Best Practices  . . . . . . . . . . . . . . . . .   3
+     2.1.  Implicit search lists . . . . . . . . . . . . . . . . . .   4
+     2.2.  Overriding manually configured search lists . . . . . . .   4
      2.3.  Querying unqualified single-label domain names  . . . . .   4
    3.  Negative Consequences For the Change  . . . . . . . . . . . .   4
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   4
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .   5
-   Appendix A.  Changes / Author Notes.  . . . . . . . . . . . . . .   5
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   6
+   Appendix A.  Changes / Author Notes.  . . . . . . . . . . . . . .   6
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
@@ -101,37 +101,54 @@ Table of Contents
    Many organizations create subdomains under their primary domain(s) to
    delegate or distribute management of their namespace, reduce the load
    on their authoritative DNS servers, and more easily distinguish a
-   host's organizational and/or geographical affiliations.
+   host's organizational and/or geographical affiliations.  It then
+   often becomes common within these organizations to only use the
+   subdomain internally as an abbreviated form of reference.
 
-   As a convenience to users, many operating systems implement search
-   list processing, a feature that allows a user to enter a partial name
-   in an application, with the operating system expanding the name
+
 
 
 
 McConachie & Kumari       Expires June 3, 2019                  [Page 2]
 
-Internet-Draft   DNS Search List Best Current Practices    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
-   through entries in a search list.  For example, if a user has a
-   search list of "corp.example.com;berlin.example.com;example.com" and
-   she types "system" into her browser's address box, the operating
-   system would try "system.corp.example.com",
-   "system.berlin.example.com", "system.example.com", and perhaps
-   "system." in some order.
+   As a convenience to users, many operating systems implement search
+   list processing, a feature that allows a user to enter a partial name
+   in an application, with the operating system expanding the name
+   through entries in a search list.
+
+   For example, if a user has a search list of
+   "corp.example.com;berlin.example.com;example.com" and she types
+   "system" into her browser's address box, the operating system would
+   try "system.corp.example.com", "system.berlin.example.com",
+   "system.example.com", and perhaps "system." in some order.
+
+   While this may be convenient for users who do not wish to use a Fully
+   Qualified Domain Name (FQDN) it comes with security implications that
+   may not be immediately evident to the user.  The most obvious of
+   which being that the user can not know precisely which domain name(s)
+   the operating system will query for and in what order.  Depending on
+   the configuration of the user's computer and network this may result
+   in the user being tricked into visiting a site they did not intend,
+   and consequently place them at risk of being phished or otherwise
+   compromised.  For more discussion on the security implications of
+   search list processing see [SAC064].
 
    Search list processing, including order of operations for search list
    processing, was loosely specified in [RFC1123] (specifically, section
    6.1.4.3 (2)), [RFC1535], and [RFC1536] and has been implemented in
    most operating systems.  Processing of search lists received via DHCP
    and IPv6 Router Advertisements (RA) is standardized in [RFC3397] and
-   [RFC6106].  As the Internet has grown, search list behavior has
-   diversified.  Applications (e.g., web browser and mail clients) and
-   DNS resolvers process search list suffixes differently.  Some of
-   these behaviors also present security and privacy issues to end
-   systems [SAC064] [RFC3397], and performance problems both for the end
-   system and the Internet.
+   [RFC6106].
+
+   As the Internet has grown, search list behavior has diversified.
+   Applications (e.g., web browser and mail clients) and DNS resolvers
+   process search list suffixes differently.  Some of these behaviors
+   also present security and privacy issues to end systems [SAC064]
+   [RFC3397], and performance problems both for the end system and the
+   Internet.
 
 1.1.  Requirements notation
 
@@ -139,27 +156,10 @@ Internet-Draft   DNS Search List Best Current Practices    November 2018
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
-2.  Proposal
+2.  Search List Best Practices
 
-2.1.  Implicit search lists
 
-   If search lists are required, operators MUST configure the search
-   list manually, and MUST NOT use implicit search lists.
 
-   An implicit search list is a search list derived from some part of a
-   host's Fully Qualified Domain Name (FQDN).  The most common implicit
-   search list is a list with a single entry composed only of the host's
-   immediate parent domain.  For example, a host with FQDN a.example.org
-   might have an implicit search list of example.org.
-
-   This behavior updates the advice given in [RFC1536] section 6.
-
-2.2.  Overriding manually configured search lists
-
-   A search list configured manually on a host by an operator SHOULD NOT
-   be overridden by DHCP or IPv6 Router Advertisements (RA).  If no
-   search list is configured manually on a host a network operator MAY
-   advertise a search list via DHCP or IPv6 RA.
 
 
 
@@ -167,11 +167,36 @@ Internet-Draft   DNS Search List Best Current Practices    November 2018
 
 McConachie & Kumari       Expires June 3, 2019                  [Page 3]
 
-Internet-Draft   DNS Search List Best Current Practices    November 2018
+Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
 
 
-   For a discussion of how hosts should process DNS search lists learned
-   via DHCP or IPv6 RAs see [RFC6106] section 5.3.1.
+2.1.  Implicit search lists
+
+   An implicit search list is a search list automatically derived from
+   some part of a host's Fully Qualified Domain Name (FQDN).  Implicit
+   search lists are not manually configured by users or network
+   administrators.  The most common implicit search list is a list with
+   a single entry composed only of the host's immediate parent domain.
+   For example, a host with FQDN a.example.org might have an implicit
+   search list of example.org.
+
+   If search lists are required, operators MUST configure the search
+   list manually, and MUST NOT use implicit search lists.  If no search
+   list is manually configured and an unqualified single-label domain
+   name (i.e., dotless domain) is to be queried, the query MUST NOT be
+   generated.
+
+   This behavior updates the advice given in [RFC1536] section 6.
+
+2.2.  Overriding manually configured search lists
+
+   A search list configured manually on a host by an operator SHOULD NOT
+   be overridden by DHCP or IPv6 Router Advertisements (RAs).  A host
+   MAY use a search list learned via DHCP or IPv6 RAs only if it has no
+   manually configured search list.
+
+   For further discussion on how hosts should process DNS search lists
+   learned via DHCP or IPv6 RAs see [RFC6106] section 5.3.1.
 
 2.3.  Querying unqualified single-label domain names
 
@@ -193,6 +218,14 @@ Internet-Draft   DNS Search List Best Current Practices    November 2018
 
    Not all applications currently in use treat these categories of
    domain names in the same way.  Incompatibilities and operational
+
+
+
+McConachie & Kumari       Expires June 3, 2019                  [Page 4]
+
+Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+
+
    problems, specifically in BYOD (Bring Your Own Device) environments,
    already exist.
 
@@ -215,16 +248,6 @@ Internet-Draft   DNS Search List Best Current Practices    November 2018
    [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
               STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
               <https://www.rfc-editor.org/info/rfc1034>.
-
-
-
-
-
-
-McConachie & Kumari       Expires June 3, 2019                  [Page 4]
-
-Internet-Draft   DNS Search List Best Current Practices    November 2018
-
 
    [RFC1123]  Braden, R., Ed., "Requirements for Internet Hosts -
               Application and Support", STD 3, RFC 1123,
@@ -251,6 +274,14 @@ Internet-Draft   DNS Search List Best Current Practices    November 2018
               DOI 10.17487/RFC3397, November 2002,
               <https://www.rfc-editor.org/info/rfc3397>.
 
+
+
+
+McConachie & Kumari       Expires June 3, 2019                  [Page 5]
+
+Internet-Draft    DNS Search Lists Considered Dangerous    November 2018
+
+
    [RFC3646]  Droms, R., Ed., "DNS Configuration options for Dynamic
               Host Configuration Protocol for IPv6 (DHCPv6)", RFC 3646,
               DOI 10.17487/RFC3646, December 2003,
@@ -274,14 +305,6 @@ Appendix A.  Changes / Author Notes.
 
    From initial to -00.
 
-
-
-
-McConachie & Kumari       Expires June 3, 2019                  [Page 5]
-
-Internet-Draft   DNS Search List Best Current Practices    November 2018
-
-
    o  Nothing changed in the template!
 
 Authors' Addresses
@@ -303,29 +326,6 @@ Authors' Addresses
    USA
 
    Email: warren@kumari.net
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

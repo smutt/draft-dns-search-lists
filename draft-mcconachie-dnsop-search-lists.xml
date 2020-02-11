@@ -25,7 +25,8 @@
   <front>
     <!--c SS: Set long title. -->
 
-    <title abbrev="DNS Search List Best Current Practices">DNS Search List Best Current Practices</title>
+    <title abbrev="DNS Search Lists Considered Dangerous">DNS Search
+    Lists Considered Dangerous</title>
 
     <author fullname="Andrew McConachie" initials="A." surname="McConachie">
       <organization abbrev="ICANN">Internet Corporation for Assigned Names and
@@ -89,21 +90,47 @@
       <t>Many organizations create subdomains under their primary domain(s) to
       delegate or distribute management of their namespace, reduce the load on
       their authoritative DNS servers, and more easily distinguish a host's
-      organizational and/or geographical affiliations.</t>
+      organizational and/or geographical affiliations. It then often
+      becomes common within these organizations to only use the
+      subdomain internally as an abbreviated form of reference.</t>
 
       <t>As a convenience to users, many operating systems implement search
       list processing, a feature that allows a user to enter a partial name in
       an application, with the operating system expanding the name through
-      entries in a search list. For example, if a user has a search list of
+      entries in a search list.</t>
+
+      <t>For example, if a user has a search list of
       "corp.example.com;berlin.example.com;example.com" and she types "system"
       into her browser's address box, the operating system would try
       "system.corp.example.com", "system.berlin.example.com",
       "system.example.com", and perhaps "system." in some order.</t>
 
-      <t>Search list processing, including order of operations for search list
-      processing, was loosely specified in <xref target="RFC1123"/> (specifically, section 6.1.4.3 (2)), <xref target="RFC1535"/>, and <xref target="RFC1536"/> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <xref target="RFC3397"/> and <xref target="RFC6106"/>.
+      <t>While this may be convenient for users who do not wish to
+      use a Fully Qualified Domain Name (FQDN) it comes with security
+      implications that may not be immediately evident to the
+      user. The most obvious of which being that the user can not
+      know precisely which domain name(s) the operating system will
+      query for and in what order. Depending on the configuration of
+      the user's computer and network this may result in the user
+      being tricked into visiting a site they did not intend, and
+      consequently place them at risk of being phished or otherwise
+      compromised. For more discussion on the security implications of
+      search list processing see <xref target="SAC064"/>. </t>
       
-      As the Internet has grown, search list behavior has diversified. Applications (e.g., web browser and mail clients) and DNS resolvers process search list suffixes differently. Some of these behaviors also present security and privacy issues to end systems <xref target="SAC064"/> <xref target="RFC3397"/>, and performance problems both for the end system and the Internet.</t>
+      <t>Search list processing, including order of operations for search list
+      processing, was loosely specified in <xref target="RFC1123"/>
+      (specifically, section 6.1.4.3 (2)), <xref target="RFC1535"/>,
+      and <xref target="RFC1536"/> and has been implemented in most
+      operating systems. Processing of search lists received via DHCP
+      and IPv6 Router Advertisements (RA) is standardized in <xref
+      target="RFC3397"/> and <xref target="RFC6106"/>. </t>
+      
+      <t>As the Internet has grown, search list behavior has
+      diversified. Applications (e.g., web browser and mail clients)
+      and DNS resolvers process search list suffixes differently. Some
+      of these behaviors also present security and privacy issues to
+      end systems <xref target="SAC064"/> <xref target="RFC3397"/>,
+      and performance problems both for the end system and the Internet.</t>
 
       <section title="Requirements notation">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -112,23 +139,40 @@
       </section>
     </section>
 
-    <section title="Proposal">
-	  <section title="Implicit search lists">
-		<t>If search lists are required, operators MUST configure the search list manually, and MUST NOT use implicit search lists.</t>
-
-		<t>An implicit search list is a search list derived from some part of a host's Fully Qualified Domain Name (FQDN). The most common implicit search list is a list with a single entry composed only of the host's immediate parent domain. For example, a host with FQDN a.example.org might have an implicit search list of example.org.</t>
-
-		<t>This behavior updates the advice given in <xref target="RFC1536"/> section 6.</t>
-	  </section>
-
-	  <section title="Overriding manually configured search lists">
-		<t>A search list configured manually on a host by an operator SHOULD NOT be overridden by DHCP or IPv6 Router Advertisements (RA). If no search list is configured manually on a host a network operator MAY advertise a search list via DHCP or IPv6 RA.</t>
-
-	    <t>For a discussion of how hosts should process DNS search lists learned via DHCP or IPv6 RAs see <xref target="RFC6106"/> section 5.3.1.</t>
-	  </section>
-
-	  <section title="Querying unqualified single-label domain names">
-		<t>Unqualified single label domain names MUST NOT be queried directly.  When a user enters a single label name into an application, that name may be subject to search list processing if a search list is specified, but must never be queried in the DNS in its original single-label form.</t>
+    <section title="Search List Best Practices">
+	    <section title="Implicit search lists">
+		    <t>An implicit search list is a search list automatically derived
+        from some part of a host's Fully Qualified Domain Name
+        (FQDN). Implicit search lists are not manually configured by users
+        or network administrators. The most common implicit search list is
+        a list with a single entry composed only of the host's immediate
+        parent domain. For example, a host with FQDN a.example.org might
+        have an implicit search list of example.org.</t> 
+        
+		    <t>If search lists are required, operators MUST configure the
+        search list manually, and MUST NOT use implicit search lists. If
+        no search list is manually configured and an unqualified
+        single-label domain name (i.e., dotless domain) 
+        is to be queried, the query MUST NOT be generated.</t>
+        
+		    <t>This behavior updates the advice given in <xref target="RFC1536"/> section 6.</t>
+	    </section>
+      
+	    <section title="Overriding manually configured search lists">
+		    <t>A search list configured manually on a host by an operator
+        SHOULD NOT be overridden by DHCP or IPv6 Router Advertisements
+        (RAs). A host MAY use a search list learned via DHCP or IPv6 RAs
+        only if it has no manually configured search list.</t>
+        
+	      <t>For further discussion on how hosts should process DNS search lists learned via DHCP or IPv6 RAs see <xref target="RFC6106"/> section 5.3.1.</t>
+	    </section>
+      
+	    <section title="Querying unqualified single-label domain names">
+		<t>Unqualified single label domain names MUST NOT be queried
+    directly.  When a user enters a single label name into an
+    application, that name may be subject to search list processing if
+    a search list is specified, but must never be queried in the DNS
+    in its original single-label form.</t>
 	  </section>
     </section>
 

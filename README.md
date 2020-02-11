@@ -6,7 +6,7 @@
 | Intended status: Best Current Practice | Google            |
 | Expires: June 3, 2019                  | November 30, 2018 |
 
-DNS Search List Best Current Practices  
+DNS Search Lists Considered Dangerous  
 <span class="filename">draft-mcconachie-search-list-00</span>
 
 # [Abstract](#rfc.abstract)
@@ -73,7 +73,7 @@ described in the Simplified BSD License.
 
   - 1.1. [Requirements notation](#rfc.section.1.1)
 
-2\. [Proposal](#rfc.section.2)
+2\. [Search List Best Practices](#rfc.section.2)
 
   - 2.1. [Implicit search lists](#rfc.section.2.1)
   - 2.2. [Overriding manually configured search lists](#rfc.section.2.2)
@@ -102,16 +102,31 @@ Appendix A. [Changes / Author Notes.](#rfc.appendix.A)
 Many organizations create subdomains under their primary domain(s) to
 delegate or distribute management of their namespace, reduce the load on
 their authoritative DNS servers, and more easily distinguish a host's
-organizational and/or geographical affiliations.
+organizational and/or geographical affiliations. It then often becomes
+common within these organizations to only use the subdomain internally
+as an abbreviated form of reference.
 
 As a convenience to users, many operating systems implement search list
 processing, a feature that allows a user to enter a partial name in an
 application, with the operating system expanding the name through
-entries in a search list. For example, if a user has a search list of
+entries in a search list.
+
+For example, if a user has a search list of
 "corp.example.com;berlin.example.com;example.com" and she types "system"
 into her browser's address box, the operating system would try
 "system.corp.example.com", "system.berlin.example.com",
 "system.example.com", and perhaps "system." in some order.
+
+While this may be convenient for users who do not wish to use a Fully
+Qualified Domain Name (FQDN) it comes with security implications that
+may not be immediately evident to the user. The most obvious of which
+being that the user can not know precisely which domain name(s) the
+operating system will query for and in what order. Depending on the
+configuration of the user's computer and network this may result in the
+user being tricked into visiting a site they did not intend, and
+consequently place them at risk of being phished or otherwise
+compromised. For more discussion on the security implications of search
+list processing see [\[SAC064\]](#SAC064).
 
 Search list processing, including order of operations for search list
 processing, was loosely specified in [\[RFC1123\]](#RFC1123)
@@ -119,12 +134,14 @@ processing, was loosely specified in [\[RFC1123\]](#RFC1123)
 [\[RFC1536\]](#RFC1536) and has been implemented in most operating
 systems. Processing of search lists received via DHCP and IPv6 Router
 Advertisements (RA) is standardized in [\[RFC3397\]](#RFC3397) and
-[\[RFC6106\]](#RFC6106). As the Internet has grown, search list behavior
-has diversified. Applications (e.g., web browser and mail clients) and
-DNS resolvers process search list suffixes differently. Some of these
-behaviors also present security and privacy issues to end systems
-[\[SAC064\]](#SAC064) [\[RFC3397\]](#RFC3397), and performance problems
-both for the end system and the Internet.
+[\[RFC6106\]](#RFC6106).
+
+As the Internet has grown, search list behavior has diversified.
+Applications (e.g., web browser and mail clients) and DNS resolvers
+process search list suffixes differently. Some of these behaviors also
+present security and privacy issues to end systems [\[SAC064\]](#SAC064)
+[\[RFC3397\]](#RFC3397), and performance problems both for the end
+system and the Internet.
 
 # [1.1.](#rfc.section.1.1) Requirements notation
 
@@ -132,18 +149,22 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
 document are to be interpreted as described in [\[RFC2119\]](#RFC2119).
 
-# [2.](#rfc.section.2) Proposal
+# [2.](#rfc.section.2) Search List Best Practices
 
 # [2.1.](#rfc.section.2.1) Implicit search lists
 
-If search lists are required, operators MUST configure the search list
-manually, and MUST NOT use implicit search lists.
+An implicit search list is a search list automatically derived from some
+part of a host's Fully Qualified Domain Name (FQDN). Implicit search
+lists are not manually configured by users or network administrators.
+The most common implicit search list is a list with a single entry
+composed only of the host's immediate parent domain. For example, a host
+with FQDN a.example.org might have an implicit search list of
+example.org.
 
-An implicit search list is a search list derived from some part of a
-host's Fully Qualified Domain Name (FQDN). The most common implicit
-search list is a list with a single entry composed only of the host's
-immediate parent domain. For example, a host with FQDN a.example.org
-might have an implicit search list of example.org.
+If search lists are required, operators MUST configure the search list
+manually, and MUST NOT use implicit search lists. If no search list is
+manually configured and an unqualified single-label domain name (i.e.,
+dotless domain) is to be queried, the query MUST NOT be generated.
 
 This behavior updates the advice given in [\[RFC1536\]](#RFC1536)
 section 6.
@@ -151,12 +172,12 @@ section 6.
 # [2.2.](#rfc.section.2.2) Overriding manually configured search lists
 
 A search list configured manually on a host by an operator SHOULD NOT be
-overridden by DHCP or IPv6 Router Advertisements (RA). If no search list
-is configured manually on a host a network operator MAY advertise a
-search list via DHCP or IPv6 RA.
+overridden by DHCP or IPv6 Router Advertisements (RAs). A host MAY use a
+search list learned via DHCP or IPv6 RAs only if it has no manually
+configured search list.
 
-For a discussion of how hosts should process DNS search lists learned
-via DHCP or IPv6 RAs see [\[RFC6106\]](#RFC6106) section
+For further discussion on how hosts should process DNS search lists
+learned via DHCP or IPv6 RAs see [\[RFC6106\]](#RFC6106) section
 5.3.1.
 
 # [2.3.](#rfc.section.2.3) Querying unqualified single-label domain names

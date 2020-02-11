@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>DNS Search List Best Current Practices</title>
+  <title>DNS Search Lists Considered Dangerous</title>
 
   <style type="text/css" title="Xml2Rfc (sans serif)">
   /*<![CDATA[*/
@@ -376,7 +376,7 @@
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Requirements notation">
-<link href="#rfc.section.2" rel="Chapter" title="2 Proposal">
+<link href="#rfc.section.2" rel="Chapter" title="2 Search List Best Practices">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Implicit search lists">
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Overriding manually configured search lists">
 <link href="#rfc.section.2.3" rel="Chapter" title="2.3 Querying unqualified single-label domain names">
@@ -432,7 +432,7 @@
     </tbody>
   </table>
 
-  <p class="title">DNS Search List Best Current Practices<br />
+  <p class="title">DNS Search Lists Considered Dangerous<br />
   <span class="filename">draft-mcconachie-search-list-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
@@ -458,7 +458,7 @@
 </li>
 <ul><li>1.1.   <a href="#rfc.section.1.1">Requirements notation</a>
 </li>
-</ul><li>2.   <a href="#rfc.section.2">Proposal</a>
+</ul><li>2.   <a href="#rfc.section.2">Search List Best Practices</a>
 </li>
 <ul><li>2.1.   <a href="#rfc.section.2.1">Implicit search lists</a>
 </li>
@@ -490,23 +490,26 @@
 
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> Introduction</h1>
-<p id="rfc.section.1.p.1">Many organizations create subdomains under their primary domain(s) to delegate or distribute management of their namespace, reduce the load on their authoritative DNS servers, and more easily distinguish a host's organizational and/or geographical affiliations.</p>
-<p id="rfc.section.1.p.2">As a convenience to users, many operating systems implement search list processing, a feature that allows a user to enter a partial name in an application, with the operating system expanding the name through entries in a search list. For example, if a user has a search list of "corp.example.com;berlin.example.com;example.com" and she types "system" into her browser's address box, the operating system would try "system.corp.example.com", "system.berlin.example.com", "system.example.com", and perhaps "system." in some order.</p>
-<p id="rfc.section.1.p.3">Search list processing, including order of operations for search list processing, was loosely specified in <a href="#RFC1123" class="xref">[RFC1123]</a> (specifically, section 6.1.4.3 (2)), <a href="#RFC1535" class="xref">[RFC1535]</a>, and <a href="#RFC1536" class="xref">[RFC1536]</a> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <a href="#RFC3397" class="xref">[RFC3397]</a> and <a href="#RFC6106" class="xref">[RFC6106]</a>.  As the Internet has grown, search list behavior has diversified. Applications (e.g., web browser and mail clients) and DNS resolvers process search list suffixes differently. Some of these behaviors also present security and privacy issues to end systems <a href="#SAC064" class="xref">[SAC064]</a> <a href="#RFC3397" class="xref">[RFC3397]</a>, and performance problems both for the end system and the Internet.</p>
+<p id="rfc.section.1.p.1">Many organizations create subdomains under their primary domain(s) to delegate or distribute management of their namespace, reduce the load on their authoritative DNS servers, and more easily distinguish a host's organizational and/or geographical affiliations. It then often becomes common within these organizations to only use the subdomain internally as an abbreviated form of reference.</p>
+<p id="rfc.section.1.p.2">As a convenience to users, many operating systems implement search list processing, a feature that allows a user to enter a partial name in an application, with the operating system expanding the name through entries in a search list.</p>
+<p id="rfc.section.1.p.3">For example, if a user has a search list of "corp.example.com;berlin.example.com;example.com" and she types "system" into her browser's address box, the operating system would try "system.corp.example.com", "system.berlin.example.com", "system.example.com", and perhaps "system." in some order.</p>
+<p id="rfc.section.1.p.4">While this may be convenient for users who do not wish to use a Fully Qualified Domain Name (FQDN) it comes with security implications that may not be immediately evident to the user. The most obvious of which being that the user can not know precisely which domain name(s) the operating system will query for and in what order. Depending on the configuration of the user's computer and network this may result in the user being tricked into visiting a site they did not intend, and consequently place them at risk of being phished or otherwise compromised. For more discussion on the security implications of search list processing see <a href="#SAC064" class="xref">[SAC064]</a>. </p>
+<p id="rfc.section.1.p.5">Search list processing, including order of operations for search list processing, was loosely specified in <a href="#RFC1123" class="xref">[RFC1123]</a> (specifically, section 6.1.4.3 (2)), <a href="#RFC1535" class="xref">[RFC1535]</a>, and <a href="#RFC1536" class="xref">[RFC1536]</a> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <a href="#RFC3397" class="xref">[RFC3397]</a> and <a href="#RFC6106" class="xref">[RFC6106]</a>. </p>
+<p id="rfc.section.1.p.6">As the Internet has grown, search list behavior has diversified. Applications (e.g., web browser and mail clients) and DNS resolvers process search list suffixes differently. Some of these behaviors also present security and privacy issues to end systems <a href="#SAC064" class="xref">[SAC064]</a> <a href="#RFC3397" class="xref">[RFC3397]</a>, and performance problems both for the end system and the Internet.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> Requirements notation</h1>
 <p id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
 <h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> Proposal</h1>
+<a href="#rfc.section.2">2.</a> Search List Best Practices</h1>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> Implicit search lists</h1>
-<p id="rfc.section.2.1.p.1">If search lists are required, operators MUST configure the search list manually, and MUST NOT use implicit search lists.</p>
-<p id="rfc.section.2.1.p.2">An implicit search list is a search list derived from some part of a host's Fully Qualified Domain Name (FQDN). The most common implicit search list is a list with a single entry composed only of the host's immediate parent domain. For example, a host with FQDN a.example.org might have an implicit search list of example.org.</p>
+<p id="rfc.section.2.1.p.1">An implicit search list is a search list automatically derived from some part of a host's Fully Qualified Domain Name (FQDN). Implicit search lists are not manually configured by users or network administrators. The most common implicit search list is a list with a single entry composed only of the host's immediate parent domain. For example, a host with FQDN a.example.org might have an implicit search list of example.org.</p>
+<p id="rfc.section.2.1.p.2">If search lists are required, operators MUST configure the search list manually, and MUST NOT use implicit search lists. If no search list is manually configured and an unqualified single-label domain name (i.e., dotless domain) is to be queried, the query MUST NOT be generated.</p>
 <p id="rfc.section.2.1.p.3">This behavior updates the advice given in <a href="#RFC1536" class="xref">[RFC1536]</a> section 6.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> Overriding manually configured search lists</h1>
-<p id="rfc.section.2.2.p.1">A search list configured manually on a host by an operator SHOULD NOT be overridden by DHCP or IPv6 Router Advertisements (RA). If no search list is configured manually on a host a network operator MAY advertise a search list via DHCP or IPv6 RA.</p>
-<p id="rfc.section.2.2.p.2">For a discussion of how hosts should process DNS search lists learned via DHCP or IPv6 RAs see <a href="#RFC6106" class="xref">[RFC6106]</a> section 5.3.1.</p>
+<p id="rfc.section.2.2.p.1">A search list configured manually on a host by an operator SHOULD NOT be overridden by DHCP or IPv6 Router Advertisements (RAs). A host MAY use a search list learned via DHCP or IPv6 RAs only if it has no manually configured search list.</p>
+<p id="rfc.section.2.2.p.2">For further discussion on how hosts should process DNS search lists learned via DHCP or IPv6 RAs see <a href="#RFC6106" class="xref">[RFC6106]</a> section 5.3.1.</p>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> Querying unqualified single-label domain names</h1>
 <p id="rfc.section.2.3.p.1">Unqualified single label domain names MUST NOT be queried directly.  When a user enters a single label name into an application, that name may be subject to search list processing if a search list is specified, but must never be queried in the DNS in its original single-label form.</p>
