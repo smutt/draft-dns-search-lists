@@ -6,7 +6,7 @@
 <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 ]>
 <!-- SS: Set category, IPR, docName -->
-<rfc category="bcp" docName="draft-mcconachie-search-list-00" ipr="trust200902" 
+<rfc category="bcp" docName="draft-mcconachie-search-list-00" ipr="trust200902"
 	updates="1536">
   <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 
@@ -67,33 +67,35 @@
       </address>
     </author>
 
-    <date day="11" month="February" year="2020"/>
+    <date day="03" month="May" year="2020"/>
 
     <abstract>
-      <t>A Domain Name System (DNS) "search list" (hereafter, simply "search
+      <t>A DNS "search list" (hereafter, simply "search
       list") is an ordered list of domain names. When a user enters a
-      name, the domain names in the search list are used as suffixes
-      to the user-supplied name, one by one, until a domain name with
-      the desired associated data is found or the search list is
-      exhausted. <xref  target="RFC1123"/></t>
+      non-fully-qualified name, the domain names in the search list are
+      used as suffixes to the user-supplied name, one by one, until a
+      domain name with the desired associated data is found or the
+      search list is exhausted. <xref  target="RFC1123"/></t>
 
-      <t>Processing search lists was weakly standardized in early Requests For
-      Comments (RFCs) <xref  target="RFC1123"/>, <xref
-      target="RFC1535"/>, <xref target="RFC1536"/> and implemented in most
+      <t>Processing search lists was weakly standardized in early RFCs
+       <xref  target="RFC1123"/>, <xref target="RFC1535"/>,
+       <xref target="RFC1536"/> and is currently implemented in most
       operating systems. However, as the Internet has grown, search
-      list behavior has diversified. Applications (e.g., web browsers,
-      mail clients) and DNS resolvers process search lists
-      differently. In addition, some of these behaviors present
-      security and privacy issues to end systems, can lead to
-      performance problems for the Internet, and can cause collisions
-      with names  provisioned under delegated top-level domains.</t>
+      list processing has become more variable. Applications
+      (e.g., web browsers, mail clients) and DNS stub resolvers process
+      search lists differently. In addition, some of these behaviors can
+      cause collisions with names provisioned under delegated top-level
+      domains, present security and privacy issues to end systems, and
+      can lead to speed and performance problems.</t>
 
       <t>In this document, we make three proposals regarding when and
-      how to use DNS search lists.</t>
+      how DNS search lists should be used.</t>
 
-      <t>[ Ed note (remove): This document is being developed in github:
-      https://github.com/smutt/draft-dns-search-lists
-      ]</t>
+      <t>[ Ed note (remove): This document is being developed in GitHub:
+      https://github.com/smutt/draft-dns-search-lists. The most recent
+      version of the document, open
+   issues, etc should all be available here.  The authors (gratefully)
+   accept pull requests. ]</t>
     </abstract>
   </front>
 
@@ -102,20 +104,22 @@
       <t>Many organizations create subdomains under their primary domain(s) to
       delegate or distribute management of their namespace, reduce the load on
       their authoritative DNS servers, and more easily distinguish a host's
-      organizational and/or geographical affiliations. It then often
-      becomes common within these organizations to only use the
-      subdomain internally as an abbreviated form of reference.</t>
+      organizational and/or geographical affiliations. It is often
+      common within these organizations to only use the
+      subdomain, as an abbreviated form of reference.</t>
 
       <t>As a convenience to users, many operating systems implement search
       list processing, a feature that allows a user to enter a partial name in
-      an application, with the operating system expanding the name through
-      entries in a search list.</t>
+      an application, with the operating system expanding the name by sequentially
+      appending each entry in the list until the name resolves (or the list is
+      exhausted).</t>
 
       <t>For example, if a user has a search list of
       "corp.example.com;berlin.example.com;example.com" and she types "system"
       into her browser's address box, the operating system would try
-      "system.corp.example.com", "system.berlin.example.com",
-      "system.example.com", and perhaps "system." in some order.</t>
+      "system.corp.example.com.", "system.berlin.example.com.",
+      "system.example.com.", and (depending on implmentation)
+      "system." in this order.</t>
 
       <t>While this may be convenient for users who do not wish to
       use a Fully Qualified Domain Name (FQDN) it comes with security
@@ -127,8 +131,8 @@
       being tricked into visiting a site they did not intend, and
       consequently place them at risk of being phished or otherwise
       compromised. For more discussion on the security implications of
-      search list processing see <xref target="SAC064"/>. </t>
-      
+      search list processing see <xref target="SAC064"/>.</t>
+
       <t>Search list processing, including order of operations for search list
       processing, was loosely specified in <xref target="RFC1123"/>
       (specifically, section 6.1.4.3 (2)), <xref target="RFC1535"/>,
@@ -137,7 +141,7 @@
       and IPv6 Router Advertisements (RA) is standardized in <xref
       target="RFC3397"/>, <xref target="RFC3646"/> and <xref
       target="RFC6106"/>. </t>
-      
+
       <t>As the Internet has grown, search list behavior has
       diversified. Applications (e.g., web browser and mail clients)
       and DNS resolvers process search list suffixes differently. Some
@@ -162,29 +166,29 @@
         or network administrators. The most common implicit search list is
         a list with a single entry composed only of the host's immediate
         parent domain. For example, a host with FQDN a.example.org might
-        have an implicit search list of example.org.</t> 
-        
+        have an implicit search list of example.org.</t>
+
 		    <t>If search lists are required, operators MUST configure the
         search list manually, and MUST NOT use implicit search lists. If
         no search list is manually configured and an unqualified
-        single-label domain name (i.e., dotless domain) 
+        single-label domain name (i.e., dotless domain)
         is to be queried, the query MUST NOT be generated.</t>
-        
+
 		    <t>This behavior updates the advice given in <xref
         target="RFC1536"/> section 6.</t>
 	    </section>
-      
+
 	    <section title="Overriding manually configured search lists">
 		    <t>A search list configured manually on a host by an operator
         SHOULD NOT be overridden by DHCP or IPv6 Router Advertisements
         (RAs). A host MAY use a search list learned via DHCP or IPv6 RAs
         only if it has no manually configured search list.</t>
-        
+
 	      <t>For further discussion on how hosts should process DNS
         search lists learned via DHCP or IPv6 RAs see <xref
         target="RFC6106"/> section 5.3.1.</t>
 	    </section>
-      
+
 	    <section title="Querying unqualified single-label domain names">
 		    <t>Unqualified single label domain names MUST NOT be queried
         directly.  When a user enters a single label name into an
@@ -192,7 +196,7 @@
         a search list is specified, and MUST NOT be queried in the DNS
         in its original single-label form.</t>
 	    </section>
-      
+
 	    <section title="Querying multi-label domain names">
 		    <t>Multi-label domain names MAY be subject to search list
         processing if a search list is specified. Multi-label domain
@@ -244,7 +248,7 @@
       <?rfc include='reference.RFC.3397'?>
 
       <?rfc include='reference.RFC.3646'?>
-      
+
       <?rfc include='reference.RFC.6106'?>
     </references>
 	<references title="Informative References">
@@ -253,9 +257,9 @@
  	      <title>SAC064: SSAC Advisory on Search List Processing</title>
 	      <author fullname="ICANN Security and Stability Advisory Committee"/>
           <date year="2014" month="February" day="13"/>
-        </front>  
+        </front>
  	  </reference>
-	  
+
 	</references>
 
     <section title="Changes / Author Notes.">

@@ -392,14 +392,14 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.12.3 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.37.1 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="McConachie, A. and W. Kumari" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-mcconachie-search-list-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2020-02-11" />
-  <meta name="dct.abstract" content="A Domain Name System (DNS) &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. " />
-  <meta name="description" content="A Domain Name System (DNS) &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. " />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-05-03" />
+  <meta name="dct.abstract" content="A DNS &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a non-fully-qualified name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. Processing search lists was weakly standardized in early RFCs , ,  and is currently implemented in most operating systems. However, as the Internet has grown, search list processing has become more variable. Applications (e.g., web browsers, mail clients) and DNS stub resolvers process search lists differently. In addition, some of these behaviors can cause collisions with names provisioned under delegated top-level domains, present security and privacy issues to end systems, and can lead to speed and performance problems.In this document, we make three proposals regarding when and how DNS search lists should be used.[ Ed note (remove): This document is being developed in GitHub: https://github.com/smutt/draft-dns-search-lists. The most recent version of the document, open issues, etc should all be available here.  The authors (gratefully) accept pull requests. ]" />
+  <meta name="description" content="A DNS &quot;search list&quot; (hereafter, simply &quot;search list&quot;) is an ordered list of domain names. When a user enters a non-fully-qualified name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. Processing search lists was weakly standardized in early RFCs , ,  and is currently implemented in most operating systems. However, as the Internet has grown, search list processing has become more variable. Applications (e.g., web browsers, mail clients) and DNS stub resolvers process search lists differently. In addition, some of these behaviors can cause collisions with names provisioned under delegated top-level domains, present security and privacy issues to end systems, and can lead to speed and performance problems.In this document, we make three proposals regarding when and how DNS search lists should be used.[ Ed note (remove): This document is being developed in GitHub: https://github.com/smutt/draft-dns-search-lists. The most recent version of the document, open issues, etc should all be available here.  The authors (gratefully) accept pull requests. ]" />
 
 </head>
 
@@ -425,8 +425,8 @@
 <td class="right">Google</td>
 </tr>
 <tr>
-<td class="left">Expires: August 14, 2020</td>
-<td class="right">February 11, 2020</td>
+<td class="left">Expires: November 4, 2020</td>
+<td class="right">May 03, 2020</td>
 </tr>
 
     	
@@ -437,15 +437,15 @@
   <span class="filename">draft-mcconachie-search-list-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>A Domain Name System (DNS) "search list" (hereafter, simply "search list") is an ordered list of domain names. When a user enters a name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. <a href="#RFC1123" class="xref">[RFC1123]</a></p>
-<p>Processing search lists was weakly standardized in early Requests For Comments (RFCs) <a href="#RFC1123" class="xref">[RFC1123]</a>, <a href="#RFC1535" class="xref">[RFC1535]</a>, <a href="#RFC1536" class="xref">[RFC1536]</a> and implemented in most operating systems. However, as the Internet has grown, search list behavior has diversified. Applications (e.g., web browsers, mail clients) and DNS resolvers process search lists differently. In addition, some of these behaviors present security and privacy issues to end systems, can lead to performance problems for the Internet, and can cause collisions with names  provisioned under delegated top-level domains.</p>
-<p>In this document, we make three proposals regarding when and how to use DNS search lists.</p>
-<p>[ Ed note (remove): This document is being developed in github: https://github.com/smutt/draft-dns-search-lists ]</p>
+<p>A DNS "search list" (hereafter, simply "search list") is an ordered list of domain names. When a user enters a non-fully-qualified name, the domain names in the search list are used as suffixes to the user-supplied name, one by one, until a domain name with the desired associated data is found or the search list is exhausted. <a href="#RFC1123" class="xref">[RFC1123]</a></p>
+<p>Processing search lists was weakly standardized in early RFCs <a href="#RFC1123" class="xref">[RFC1123]</a>, <a href="#RFC1535" class="xref">[RFC1535]</a>, <a href="#RFC1536" class="xref">[RFC1536]</a> and is currently implemented in most operating systems. However, as the Internet has grown, search list processing has become more variable. Applications (e.g., web browsers, mail clients) and DNS stub resolvers process search lists differently. In addition, some of these behaviors can cause collisions with names provisioned under delegated top-level domains, present security and privacy issues to end systems, and can lead to speed and performance problems.</p>
+<p>In this document, we make three proposals regarding when and how DNS search lists should be used.</p>
+<p>[ Ed note (remove): This document is being developed in GitHub: https://github.com/smutt/draft-dns-search-lists. The most recent version of the document, open issues, etc should all be available here.  The authors (gratefully) accept pull requests. ]</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on August 14, 2020.</p>
+<p>This Internet-Draft will expire on November 4, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -493,10 +493,10 @@
 
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> Introduction</h1>
-<p id="rfc.section.1.p.1">Many organizations create subdomains under their primary domain(s) to delegate or distribute management of their namespace, reduce the load on their authoritative DNS servers, and more easily distinguish a host's organizational and/or geographical affiliations. It then often becomes common within these organizations to only use the subdomain internally as an abbreviated form of reference.</p>
-<p id="rfc.section.1.p.2">As a convenience to users, many operating systems implement search list processing, a feature that allows a user to enter a partial name in an application, with the operating system expanding the name through entries in a search list.</p>
-<p id="rfc.section.1.p.3">For example, if a user has a search list of "corp.example.com;berlin.example.com;example.com" and she types "system" into her browser's address box, the operating system would try "system.corp.example.com", "system.berlin.example.com", "system.example.com", and perhaps "system." in some order.</p>
-<p id="rfc.section.1.p.4">While this may be convenient for users who do not wish to use a Fully Qualified Domain Name (FQDN) it comes with security implications that may not be immediately evident to the user. The most obvious of which being that the user can not know precisely which domain name(s) the operating system will query for and in what order. Depending on the configuration of the user's computer and network this may result in the user being tricked into visiting a site they did not intend, and consequently place them at risk of being phished or otherwise compromised. For more discussion on the security implications of search list processing see <a href="#SAC064" class="xref">[SAC064]</a>. </p>
+<p id="rfc.section.1.p.1">Many organizations create subdomains under their primary domain(s) to delegate or distribute management of their namespace, reduce the load on their authoritative DNS servers, and more easily distinguish a host's organizational and/or geographical affiliations. It is often common within these organizations to only use the subdomain, as an abbreviated form of reference.</p>
+<p id="rfc.section.1.p.2">As a convenience to users, many operating systems implement search list processing, a feature that allows a user to enter a partial name in an application, with the operating system expanding the name by sequentially appending each entry in the list until the name resolves (or the list is exhausted).</p>
+<p id="rfc.section.1.p.3">For example, if a user has a search list of "corp.example.com;berlin.example.com;example.com" and she types "system" into her browser's address box, the operating system would try "system.corp.example.com.", "system.berlin.example.com.", "system.example.com.", and (depending on implmentation) "system." in this order.</p>
+<p id="rfc.section.1.p.4">While this may be convenient for users who do not wish to use a Fully Qualified Domain Name (FQDN) it comes with security implications that may not be immediately evident to the user. The most obvious of which being that the user can not know precisely which domain name(s) the operating system will query for and in what order. Depending on the configuration of the user's computer and network this may result in the user being tricked into visiting a site they did not intend, and consequently place them at risk of being phished or otherwise compromised. For more discussion on the security implications of search list processing see <a href="#SAC064" class="xref">[SAC064]</a>.</p>
 <p id="rfc.section.1.p.5">Search list processing, including order of operations for search list processing, was loosely specified in <a href="#RFC1123" class="xref">[RFC1123]</a> (specifically, section 6.1.4.3 (2)), <a href="#RFC1535" class="xref">[RFC1535]</a>, and <a href="#RFC1536" class="xref">[RFC1536]</a> and has been implemented in most operating systems. Processing of search lists received via DHCP and IPv6 Router Advertisements (RA) is standardized in <a href="#RFC3397" class="xref">[RFC3397]</a>, <a href="#RFC3646" class="xref">[RFC3646]</a> and <a href="#RFC6106" class="xref">[RFC6106]</a>. </p>
 <p id="rfc.section.1.p.6">As the Internet has grown, search list behavior has diversified. Applications (e.g., web browser and mail clients) and DNS resolvers process search list suffixes differently. Some of these behaviors also present security and privacy issues to end systems <a href="#SAC064" class="xref">[SAC064]</a> <a href="#RFC3397" class="xref">[RFC3397]</a>, and performance problems both for the end system and the Internet.</p>
 <h1 id="rfc.section.1.1">
@@ -584,7 +584,8 @@
 <a href="#rfc.references.2">7.2.</a> Informative References</h1>
 <table><tbody><tr>
 <td class="reference"><b id="SAC064">[SAC064]</b></td>
-<td class="top">"<a href="https://www.icann.org/en/groups/ssac/documents/sac-064-en.pdf">SAC064: SSAC Advisory on Search List Processing</a>", February 2014.</td>
+<td class="top">
+<a>Committee, I. S. A. S. A.</a>, "<a href="https://www.icann.org/en/groups/ssac/documents/sac-064-en.pdf">SAC064: SSAC Advisory on Search List Processing</a>", February 2014.</td>
 </tr></tbody></table>
 <h1 id="rfc.appendix.A">
 <a href="#rfc.appendix.A">Appendix A.</a> Changes / Author Notes.</h1>

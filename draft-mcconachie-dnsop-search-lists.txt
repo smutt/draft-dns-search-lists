@@ -6,7 +6,7 @@ Network Working Group                                      A. McConachie
 Internet-Draft                                                     ICANN
 Updates: 1536 (if approved)                                    W. Kumari
 Intended status: Best Current Practice                            Google
-Expires: August 14, 2020                               February 11, 2020
+Expires: November 4, 2020                                   May 03, 2020
 
 
                  DNS Search Lists Considered Dangerous
@@ -14,27 +14,29 @@ Expires: August 14, 2020                               February 11, 2020
 
 Abstract
 
-   A Domain Name System (DNS) "search list" (hereafter, simply "search
-   list") is an ordered list of domain names.  When a user enters a
-   name, the domain names in the search list are used as suffixes to the
-   user-supplied name, one by one, until a domain name with the desired
+   A DNS "search list" (hereafter, simply "search list") is an ordered
+   list of domain names.  When a user enters a non-fully-qualified name,
+   the domain names in the search list are used as suffixes to the user-
+   supplied name, one by one, until a domain name with the desired
    associated data is found or the search list is exhausted.  [RFC1123]
 
-   Processing search lists was weakly standardized in early Requests For
-   Comments (RFCs) [RFC1123], [RFC1535], [RFC1536] and implemented in
-   most operating systems.  However, as the Internet has grown, search
-   list behavior has diversified.  Applications (e.g., web browsers,
-   mail clients) and DNS resolvers process search lists differently.  In
-   addition, some of these behaviors present security and privacy issues
-   to end systems, can lead to performance problems for the Internet,
-   and can cause collisions with names provisioned under delegated top-
-   level domains.
+   Processing search lists was weakly standardized in early RFCs
+   [RFC1123], [RFC1535], [RFC1536] and is currently implemented in most
+   operating systems.  However, as the Internet has grown, search list
+   processing has become more variable.  Applications (e.g., web
+   browsers, mail clients) and DNS stub resolvers process search lists
+   differently.  In addition, some of these behaviors can cause
+   collisions with names provisioned under delegated top-level domains,
+   present security and privacy issues to end systems, and can lead to
+   speed and performance problems.
 
-   In this document, we make three proposals regarding when and how to
-   use DNS search lists.
+   In this document, we make three proposals regarding when and how DNS
+   search lists should be used.
 
-   [ Ed note (remove): This document is being developed in github:
-   https://github.com/smutt/draft-dns-search-lists ]
+   [ Ed note (remove): This document is being developed in GitHub:
+   https://github.com/smutt/draft-dns-search-lists.  The most recent
+   version of the document, open issues, etc should all be available
+   here.  The authors (gratefully) accept pull requests. ]
 
 Status of This Memo
 
@@ -48,17 +50,18 @@ Status of This Memo
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
+
+
+
+McConachie & Kumari     Expires November 4, 2020                [Page 1]
+
+Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
+
+
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-
-
-McConachie & Kumari      Expires August 14, 2020                [Page 1]
-
-Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
-
-
-   This Internet-Draft will expire on August 14, 2020.
+   This Internet-Draft will expire on November 4, 2020.
 
 Copyright Notice
 
@@ -79,12 +82,12 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements notation . . . . . . . . . . . . . . . . . .   3
-   2.  Search List Best Practices  . . . . . . . . . . . . . . . . .   3
-     2.1.  Implicit search lists . . . . . . . . . . . . . . . . . .   3
+   2.  Search List Best Practices  . . . . . . . . . . . . . . . . .   4
+     2.1.  Implicit search lists . . . . . . . . . . . . . . . . . .   4
      2.2.  Overriding manually configured search lists . . . . . . .   4
      2.3.  Querying unqualified single-label domain names  . . . . .   4
      2.4.  Querying multi-label domain names . . . . . . . . . . . .   4
-   3.  Negative Consequences For the Change  . . . . . . . . . . . .   4
+   3.  Negative Consequences For the Change  . . . . . . . . . . . .   5
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .   5
@@ -99,29 +102,30 @@ Table of Contents
    Many organizations create subdomains under their primary domain(s) to
    delegate or distribute management of their namespace, reduce the load
    on their authoritative DNS servers, and more easily distinguish a
-   host's organizational and/or geographical affiliations.  It then
-   often becomes common within these organizations to only use the
-   subdomain internally as an abbreviated form of reference.
+   host's organizational and/or geographical affiliations.  It is often
+   common within these organizations to only use the subdomain, as an
+   abbreviated form of reference.
+
+
+
+
+McConachie & Kumari     Expires November 4, 2020                [Page 2]
+
+Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
+
 
    As a convenience to users, many operating systems implement search
    list processing, a feature that allows a user to enter a partial name
-
-
-
-
-McConachie & Kumari      Expires August 14, 2020                [Page 2]
-
-Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
-
-
-   in an application, with the operating system expanding the name
-   through entries in a search list.
+   in an application, with the operating system expanding the name by
+   sequentially appending each entry in the list until the name resolves
+   (or the list is exhausted).
 
    For example, if a user has a search list of
    "corp.example.com;berlin.example.com;example.com" and she types
    "system" into her browser's address box, the operating system would
-   try "system.corp.example.com", "system.berlin.example.com",
-   "system.example.com", and perhaps "system." in some order.
+   try "system.corp.example.com.", "system.berlin.example.com.",
+   "system.example.com.", and (depending on implmentation) "system." in
+   this order.
 
    While this may be convenient for users who do not wish to use a Fully
    Qualified Domain Name (FQDN) it comes with security implications that
@@ -154,6 +158,18 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
+
+
+
+
+
+
+
+McConachie & Kumari     Expires November 4, 2020                [Page 3]
+
+Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
+
+
 2.  Search List Best Practices
 
 2.1.  Implicit search lists
@@ -162,14 +178,6 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
    some part of a host's Fully Qualified Domain Name (FQDN).  Implicit
    search lists are not manually configured by users or network
    administrators.  The most common implicit search list is a list with
-
-
-
-McConachie & Kumari      Expires August 14, 2020                [Page 3]
-
-Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
-
-
    a single entry composed only of the host's immediate parent domain.
    For example, a host with FQDN a.example.org might have an implicit
    search list of example.org.
@@ -207,6 +215,17 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
    subject to search list processing if their right most character is a
    dot(".").
 
+
+
+
+
+
+
+McConachie & Kumari     Expires November 4, 2020                [Page 4]
+
+Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
+
+
 3.  Negative Consequences For the Change
 
    There are operators that today rely on a combination of both implicit
@@ -216,15 +235,6 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
    Changing search list behavior of unqualified multi-label domain names
    MAY potentially reduce the utility of these names.
-
-
-
-
-
-McConachie & Kumari      Expires August 14, 2020                [Page 4]
-
-Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
-
 
    Not all applications currently in use treat these categories of
    domain names in the same way.  Incompatibilities and operational
@@ -261,6 +271,17 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
               DOI 10.17487/RFC1535, October 1993,
               <https://www.rfc-editor.org/info/rfc1535>.
 
+
+
+
+
+
+
+McConachie & Kumari     Expires November 4, 2020                [Page 5]
+
+Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
+
+
    [RFC1536]  Kumar, A., Postel, J., Neuman, C., Danzig, P., and S.
               Miller, "Common DNS Implementation Errors and Suggested
               Fixes", RFC 1536, DOI 10.17487/RFC1536, October 1993,
@@ -270,17 +291,6 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
-
-
-
-
-
-McConachie & Kumari      Expires August 14, 2020                [Page 5]
-
-Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
-
 
    [RFC3397]  Aboba, B. and S. Cheshire, "Dynamic Host Configuration
               Protocol (DHCP) Domain Search Option", RFC 3397,
@@ -299,10 +309,10 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 7.2.  Informative References
 
-   [SAC064]   "SAC064: SSAC Advisory on Search List Processing",
-              February 2014,
-              <https://www.icann.org/en/groups/ssac/documents/
-              sac-064-en.pdf>.
+   [SAC064]   Committee, I. S. A. S. A., "SAC064: SSAC Advisory on
+              Search List Processing", February 2014,
+              <https://www.icann.org/en/groups/ssac/documents/sac-
+              064-en.pdf>.
 
 Appendix A.  Changes / Author Notes.
 
@@ -314,6 +324,20 @@ Appendix A.  Changes / Author Notes.
 
 Authors' Addresses
 
+
+
+
+
+
+
+
+
+
+McConachie & Kumari     Expires November 4, 2020                [Page 6]
+
+Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
+
+
    Andrew McConachie
    Internet Corporation for Assigned Names and Numbers
    12025 Waterfront Drive, Suite 300
@@ -322,20 +346,6 @@ Authors' Addresses
 
    Phone: +1.310.301.5800
    Email: andrew.mccconachie@icann.org
-
-
-
-
-
-
-
-
-
-
-
-McConachie & Kumari      Expires August 14, 2020                [Page 6]
-
-Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
    Warren Kumari
@@ -379,14 +389,4 @@ Internet-Draft    DNS Search Lists Considered Dangerous    February 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-McConachie & Kumari      Expires August 14, 2020                [Page 7]
+McConachie & Kumari     Expires November 4, 2020                [Page 7]
