@@ -82,7 +82,7 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
      1.1.  Requirements notation . . . . . . . . . . . . . . . . . .   3
-   2.  Search List Best Practices  . . . . . . . . . . . . . . . . .   4
+   2.  Search List Best Practices  . . . . . . . . . . . . . . . . .   3
      2.1.  Implicit search lists . . . . . . . . . . . . . . . . . .   4
      2.2.  Overriding manually configured search lists . . . . . . .   4
      2.3.  Querying unqualified single-label domain names  . . . . .   4
@@ -127,29 +127,27 @@ Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
    "system.example.com.", and (depending on implmentation) "system." in
    this order.
 
-   While this may be convenient for users who do not wish to use a Fully
-   Qualified Domain Name (FQDN) it comes with security implications that
-   may not be immediately evident to the user.  The most obvious of
-   which being that the user can not know precisely which domain name(s)
-   the operating system will query for and in what order.  Depending on
-   the configuration of the user's computer and network this may result
-   in the user being tricked into visiting a site they did not intend,
-   and consequently place them at risk of being phished or otherwise
+   While search list processing may be convenient for users who do not
+   wish to type a Fully Qualified Domain Name (FQDN), it comes with
+   security implications that may not be immediately evident to the
+   user.  Depending on the configuration of the user's computer and
+   network this may result in the user visiting a site they did not
+   intend, and also placing them at risk of being phished or otherwise
    compromised.  For more discussion on the security implications of
    search list processing see [SAC064].
 
    Search list processing, including order of operations for search list
-   processing, was loosely specified in [RFC1123] (specifically, section
+   processing, is loosely specified in [RFC1123] (specifically, section
    6.1.4.3 (2)), [RFC1535], and [RFC1536] and has been implemented in
    most operating systems.  Processing of search lists received via DHCP
    and IPv6 Router Advertisements (RA) is standardized in [RFC3397],
    [RFC3646] and [RFC6106].
 
-   As the Internet has grown, search list behavior has diversified.
-   Applications (e.g., web browser and mail clients) and DNS resolvers
-   process search list suffixes differently.  Some of these behaviors
-   also present security and privacy issues to end systems [SAC064]
-   [RFC3397], and performance problems both for the end system and the
+   As the Internet has grown, search list processing behavior has
+   diversified.  Applications (e.g., web browser and mail clients) and
+   DNS resolvers process search list suffixes differently.  Some of
+   these behaviors also present security and privacy issues to end users
+   [SAC064] [RFC3397], and issues for both for the end user and the
    Internet.
 
 1.1.  Requirements notation
@@ -157,6 +155,8 @@ Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
+
+2.  Search List Best Practices
 
 
 
@@ -169,8 +169,6 @@ McConachie & Kumari     Expires November 4, 2020                [Page 3]
 
 Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
 
-
-2.  Search List Best Practices
 
 2.1.  Implicit search lists
 
@@ -185,17 +183,22 @@ Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
    If search lists are required, operators MUST configure the search
    list manually, and MUST NOT use implicit search lists.  If no search
    list is manually configured and an unqualified single-label domain
-   name (i.e., dotless domain) is to be queried, the query MUST NOT be
-   generated.
+   name (i.e., dotless domain) is to be queried, the stub resolver MUST
+   NOT emit the query.  [TODO (WK): Needs more text - who does not send
+   the query? (probably the stub).  The stub returns NXDOMAIN?  What
+   happens with mDNS/Bonjour?  Can I lookup "printer"?]
 
-   This behavior updates the advice given in [RFC1536] section 6.
+   This behavior updates the advice given in [RFC1536] section 6.  [TODO
+   (WK): Add specific text (OLD/NEW) ]
 
 2.2.  Overriding manually configured search lists
 
    A search list configured manually on a host by an operator SHOULD NOT
    be overridden by DHCP or IPv6 Router Advertisements (RAs).  A host
    MAY use a search list learned via DHCP or IPv6 RAs only if it has no
-   manually configured search list.
+   manually configured search list.[TODO (WK): What about merging them?
+   If I have manually set 'example.com' and DHCP adds example.net should
+   I have "example.com,example.net"?  What about BYOD devices?]
 
    For further discussion on how hosts should process DNS search lists
    learned via DHCP or IPv6 RAs see [RFC6106] section 5.3.1.
@@ -213,10 +216,7 @@ Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
    Multi-label domain names MAY be subject to search list processing if
    a search list is specified.  Multi-label domain names MUST NOT be
    subject to search list processing if their right most character is a
-   dot(".").
-
-
-
+   dot(".").[TODO (WK): This conflicts with the advice in RFCxxx, which
 
 
 
@@ -226,12 +226,15 @@ McConachie & Kumari     Expires November 4, 2020                [Page 4]
 Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
 
 
+   says that you MUST first query the DNS if the name contains a
+   dot(".")]
+
 3.  Negative Consequences For the Change
 
-   There are operators that today rely on a combination of both implicit
-   search lists, and the automatic propagation of search lists to
-   clients via DHCP or IPv6 RA.  The proposed changes would require
-   operators to update their procedures.
+   As of this writing, there are operators that rely on a combination of
+   both implicit search lists, and the automatic propagation of search
+   lists to clients via DHCP or IPv6 RA.  The proposed changes would
+   require operators to update their procedures.
 
    Changing search list behavior of unqualified multi-label domain names
    MAY potentially reduce the utility of these names.
@@ -270,9 +273,6 @@ Internet-Draft    DNS Search Lists Considered Dangerous         May 2020
               With Widely Deployed DNS Software", RFC 1535,
               DOI 10.17487/RFC1535, October 1993,
               <https://www.rfc-editor.org/info/rfc1535>.
-
-
-
 
 
 
